@@ -1,13 +1,18 @@
 {
-  "name": "backbone.lazyrouter",
+  "name": "marionette.enhancedrouter",
   "version": "0.1.0",
-  "description": "A Backbone extended Router with lazy load logic",
+  "description": "An enhanced Backbone Router",
   "main": "dist/backbone.lazyrouter.js",
   "author": {
     "name": "Stéphane Bachelier",
     "email": "stephane.bachelier@gmail.com"
   },
-  "repository": "stephanebachelier/backbone.lazyrouter",
+  "repository": "stephanebachelier/marionette.enhancedrouter",
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {},
+  "keywords": [
+    "marionette",
+    "backbone",
+    "router"
+  ]
 }
