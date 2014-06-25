@@ -1,0 +1,13 @@
+{
+  "name": "backbone.lazyrouter",
+  "version": "0.0.0",
+  "description": "A Backbone extended Router with lazy load logic",
+  "main": "dist/backbone.lazyrouter.js",
+  "author": {
+    "name": "Stéphane Bachelier",
+    "email": "stephane.bachelier@gmail.com"
+  },
+  "repository": "stephanebachelier/backbone.lazyrouter",
+  "license": "MIT",
+  "dependencies": {}
+}
