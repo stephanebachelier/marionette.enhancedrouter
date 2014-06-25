@@ -1,8 +1,9 @@
 default:
   - build
-  
+
 build:
   - jshint
   - jscs
+  - umd
   - concat
   - uglify

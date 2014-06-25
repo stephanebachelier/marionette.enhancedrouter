@@ -4,7 +4,7 @@ module.exports = {
     stripBanners: true
   },
   dist: {
-    src: ['lib/<%= pkg.name %>.js'],
+    src: '<%= concat.dist.dest %>',
     dest: 'dist/<%= pkg.name %>.js'
   }
 };
