@@ -1,22 +1,25 @@
-/*! marionette.enhancedrouter - v0.2.0
+/*! marionette.enhancedrouter - v0.2.1
  *  Release on: 2014-06-25
  *  Copyright (c) 2014 Stéphane Bachelier
  *  Licensed MIT */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
-    define(["backbone"], function (backbone) {
-      return (root.returnExportsGlobal = factory(backbone));
+    define(["backbone",
+      "marionette"], function (Backbone, Marionette) {
+      return (root.returnExportsGlobal = factory(Backbone, Marionette));
     });
   } else if (typeof exports === 'object') {
     // Node. Does not work with strict CommonJS, but
     // only CommonJS-like enviroments that support module.exports,
     // like Node.
-    module.exports = factory(require("backbone"));
+    module.exports = factory(require("backbone"),
+      require("marionette"));
   } else {
-    root['LazyRouter'] = factory(backbone);
+    root['LazyRouter'] = factory(backbone,
+      marionette);
   }
-}(this, function (backbone) {
+}(this, function (Backbone, Marionette) {
 
   'use strict';
   
@@ -107,10 +110,10 @@
   
     // Proxy `getOption` to enable getting options from this or this.options by name.
     getOption: function (optionName) {
-      return Backbone.Marionette.getOption(this, optionName);
+      return Marionette.getOption(this, optionName);
     },
   
-    triggerMethod: Backbone.Marionette.triggerMethod
+    triggerMethod: Marionette.triggerMethod
   });
   
   Backbone.LazyRouter = LazyRouter;
