@@ -32,6 +32,8 @@
     "before": true,
     "after": true,
     "beforeEach": true,
-    "afterEach": true
+    "afterEach": true,
+    "Backbone": true,
+    "_": true
   }
 }
