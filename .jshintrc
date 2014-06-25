@@ -34,6 +34,7 @@
     "beforeEach": true,
     "afterEach": true,
     "Backbone": true,
+    "Marionette": true,
     "_": true
   }
 }
