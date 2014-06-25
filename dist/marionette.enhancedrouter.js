@@ -1,4 +1,4 @@
-/*! backbone.lazyrouter - v0.1.0
+/*! marionette.enhancedrouter - v0.2.0
  *  Release on: 2014-06-25
  *  Copyright (c) 2014 Stéphane Bachelier
  *  Licensed MIT */
