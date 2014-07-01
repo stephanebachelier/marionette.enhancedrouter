@@ -1,4 +1,4 @@
-/*! marionette.enhancedrouter - v1.0.0
+/*! marionette.enhancedrouter - v1.0.1
  *  Release on: 2014-07-01
  *  Copyright (c) 2014 Stéphane Bachelier
  *  Licensed MIT */
@@ -20,7 +20,7 @@
       require("underscore"),
       require("rsvp"));
   } else {
-    root['LazyRouter'] = factory(backbone,
+    root['EnhancedRouter'] = factory(backbone,
       marionette,
       _,
       RSVP);
@@ -151,7 +151,7 @@
   Backbone.EnhancedRouter = EnhancedRouter;
   
 
-  return LazyRouter;
+  return EnhancedRouter;
 
 
 }));
