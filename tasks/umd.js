@@ -3,7 +3,7 @@ module.exports = {
     src: 'lib/<%= pkg.name %>.js',
     dest: 'dist/<%= pkg.name %>.js',
     template: 'umd',
-    objectToExport: 'LazyRouter',
+    objectToExport: 'EnhancedRouter',
     indent: '  ',
     deps: {
       default: ['Backbone', 'Marionette', '_', 'RSVP'],
