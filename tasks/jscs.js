@@ -5,5 +5,5 @@ module.exports = {
   },
   lib: ['lib/generator-jslib.js'],
   test: ['test/spec/{,*/}*.js'],
-  grunt: ['Gruntfile.js', 'tasks/{,*/}*.js']
+  gruntfile: ['Gruntfile.js', 'tasks/{,*/}*.js']
 };

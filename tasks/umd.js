@@ -6,10 +6,10 @@ module.exports = {
     objectToExport: 'LazyRouter',
     indent: '  ',
     deps: {
-      default: ['Backbone', 'Marionette'],
-      amd: ['backbone', 'marionette'],
-      cjs: ['backbone', 'marionette'],
-      global: ['backbone', 'marionette']
+      default: ['Backbone', 'Marionette', '_', 'RSVP'],
+      amd: ['backbone', 'marionette', 'underscore', 'rsvp'],
+      cjs: ['backbone', 'marionette', 'underscore', 'rsvp'],
+      global: ['backbone', 'marionette', '_', 'RSVP']
     }
   }
 };

@@ -6,7 +6,7 @@ module.exports = {
     src: ['Gruntfile.js', 'tasks/{,*/}*.js']
   },
   lib: {
-    src: ['/scripts/**/*.js']
+    src: ['lib/<%= pkg.name %>.js']
   },
   test: {
     src: ['test/spec/**/*.js']
