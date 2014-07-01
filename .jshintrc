@@ -35,6 +35,7 @@
     "afterEach": true,
     "Backbone": true,
     "Marionette": true,
-    "_": true
+    "_": true,
+    "RSVP": true
   }
 }
