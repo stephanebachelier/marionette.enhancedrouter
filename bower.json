@@ -1,6 +1,6 @@
 {
   "name": "marionette.enhancedrouter",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "An enhanced Backbone Router",
   "main": "dist/backbone.lazyrouter.js",
   "author": {
