@@ -1,5 +1,5 @@
-/*! marionette.enhancedrouter - v1.1.0
- *  Release on: 2014-07-02
+/*! marionette.enhancedrouter - v1.1.1
+ *  Release on: 2014-07-04
  *  Copyright (c) 2014 Stéphane Bachelier
  *  Licensed MIT */
 (function (root, factory) {
@@ -164,7 +164,7 @@
           }
   
           // trigger the `after:route`
-          this.triggerMethod('after:route', [route].concat(arguments));
+          self.triggerMethod('after:route', [route].concat(arguments));
         });
       };
   
