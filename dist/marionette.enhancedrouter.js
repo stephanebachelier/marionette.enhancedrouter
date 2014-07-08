@@ -1,5 +1,5 @@
-/*! marionette.enhancedrouter - v1.1.1
- *  Release on: 2014-07-04
+/*! marionette.enhancedrouter - v1.2.0
+ *  Release on: 2014-07-09
  *  Copyright (c) 2014 Stéphane Bachelier
  *  Licensed MIT */
 (function (root, factory) {
@@ -44,10 +44,19 @@
       this.options = options || {};
       this._controllers = {};
   
-      // call setup() if a trueable `setup` property exists in options
-      if (this.options.setup) {
-        this.setup();
+      // if a controller options exists add it as a default controller
+      // it will be compatible with Marionette.AppRouter
+      if (this.options.controller) {
+        this.addController(this.options.controller);
       }
+  
+      // call setup() unless a false `setup` property exists in options
+      // most users will want this and on the contrario no error is throw
+      // which may let the user think there is a bug.
+      if (this.options.setup && this.options.setup === false) {
+        return;
+      }
+      this.setup();
     },
   
     // ## setup
