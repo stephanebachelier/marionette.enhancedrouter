@@ -20,8 +20,6 @@ module.exports = function (grunt) {
     init: true,
     configPath: path.join(process.cwd(), 'tasks'),
     config: config,
-    jitGrunt: {
-      jscs: 'grunt-jscs-checker'
-    }
+    jitGrunt: true
   });
 };
