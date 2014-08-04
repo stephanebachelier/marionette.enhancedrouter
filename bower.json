@@ -1,6 +1,6 @@
 {
   "name": "marionette.enhancedrouter",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "An enhanced Backbone Router",
   "main": "dist/backbone.lazyrouter.js",
   "author": {
@@ -9,7 +9,12 @@
   },
   "repository": "stephanebachelier/marionette.enhancedrouter",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "rsvp": "~3.0.8",
+    "backbone": "~1.1.2",
+    "underscore": "~1.6.0",
+    "marionette": "~2.1.0"
+  },
   "keywords": [
     "marionette",
     "backbone",

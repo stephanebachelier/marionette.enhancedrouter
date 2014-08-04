@@ -1,5 +1,5 @@
-/*! marionette.enhancedrouter - v1.2.0
- *  Release on: 2014-07-09
+/*! marionette.enhancedrouter - v1.2.1
+ *  Release on: 2014-08-04
  *  Copyright (c) 2014 Stéphane Bachelier
  *  Licensed MIT */
 (function (root, factory) {
@@ -103,10 +103,11 @@
     // ## _getController
     // find a controller for the given `route`
     // also pass a resolve and reject function
-    _getController: function (route, resolve, reject) {
+    _getController: function (routeArgs, resolve, reject) {
+      var route = routeArgs.route;
       // resolve promise if controller is present for current route
       if (this._controllers[route] && this._controllers[route].controller) {
-        resolve(this._controllers[route].controller);
+        resolve(routeArgs.params);
       }
       else {
         // record resolve and reject function for later use for the given route
@@ -117,7 +118,7 @@
   
         // check if catch all router exists
         if (this._controllers['*']) {
-          this._controllers[route].resolve(this._controllers['*'].controller);
+          this._controllers[route].resolve(routeArgs.params);
         }
       }
     },
@@ -153,13 +154,17 @@
     // this method is responsible for adding handlers for the given `route`.
     _addAppRoute: function (route, methodName) {
       var method = function () {
+        var routeArgs = {
+          route: route,
+          params: arguments
+        };
         // trigger the `before:route`
-        this.triggerMethod('before:route', [route].concat(arguments));
+        this.triggerMethod('before:route', routeArgs);
   
         var self = this;
         // build a promise to wait for controller being defined
         var promise = new RSVP.Promise(function (resolve, reject) {
-          _.bind(self._getController, self)(route, resolve, reject);
+          _.bind(self._getController, self)(routeArgs, resolve, reject);
         });
   
         promise.then(function (controller) {
