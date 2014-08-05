@@ -1,5 +1,5 @@
-/*! marionette.enhancedrouter - v1.2.1
- *  Release on: 2014-08-04
+/*! marionette.enhancedrouter - v1.2.2
+ *  Release on: 2014-08-05
  *  Copyright (c) 2014 Stéphane Bachelier
  *  Licensed MIT */
 (function (root, factory) {
@@ -107,7 +107,7 @@
       var route = routeArgs.route;
       // resolve promise if controller is present for current route
       if (this._controllers[route] && this._controllers[route].controller) {
-        resolve(routeArgs.params);
+        resolve(this._controllers[route].controller, routeArgs.params);
       }
       else {
         // record resolve and reject function for later use for the given route
@@ -118,7 +118,7 @@
   
         // check if catch all router exists
         if (this._controllers['*']) {
-          this._controllers[route].resolve(routeArgs.params);
+          this._controllers[route].resolve(this._controllers['*'].controller, routeArgs.params);
         }
       }
     },
@@ -167,14 +167,14 @@
           _.bind(self._getController, self)(routeArgs, resolve, reject);
         });
   
-        promise.then(function (controller) {
+        promise.then(function (controller, routeArgs) {
           // find a the method `methodName` on the `controller`.
           var handler = controller[methodName];
           if (!handler) {
             throw new Error('Method "' + methodName + '" was not found on the controller');
           }
           if (handler) {
-            handler.apply(controller, arguments);
+            handler.apply(controller, routeArgs);
           }
   
           // trigger the `after:route`
