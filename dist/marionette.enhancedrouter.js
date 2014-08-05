@@ -1,4 +1,4 @@
-/*! marionette.enhancedrouter - v1.2.2
+/*! marionette.enhancedrouter - v1.2.3
  *  Release on: 2014-08-05
  *  Copyright (c) 2014 Stéphane Bachelier
  *  Licensed MIT */
@@ -103,11 +103,10 @@
     // ## _getController
     // find a controller for the given `route`
     // also pass a resolve and reject function
-    _getController: function (routeArgs, resolve, reject) {
-      var route = routeArgs.route;
+    _getController: function (route, resolve, reject) {
       // resolve promise if controller is present for current route
       if (this._controllers[route] && this._controllers[route].controller) {
-        resolve(this._controllers[route].controller, routeArgs.params);
+        resolve(this._controllers[route].controller);
       }
       else {
         // record resolve and reject function for later use for the given route
@@ -118,7 +117,7 @@
   
         // check if catch all router exists
         if (this._controllers['*']) {
-          this._controllers[route].resolve(this._controllers['*'].controller, routeArgs.params);
+          this._controllers[route].resolve(this._controllers['*'].controller);
         }
       }
     },
@@ -164,21 +163,21 @@
         var self = this;
         // build a promise to wait for controller being defined
         var promise = new RSVP.Promise(function (resolve, reject) {
-          _.bind(self._getController, self)(routeArgs, resolve, reject);
+          _.bind(self._getController, self)(route, resolve, reject);
         });
   
-        promise.then(function (controller, routeArgs) {
+        promise.then(function (controller) {
           // find a the method `methodName` on the `controller`.
           var handler = controller[methodName];
           if (!handler) {
             throw new Error('Method "' + methodName + '" was not found on the controller');
           }
           if (handler) {
-            handler.apply(controller, routeArgs);
+            handler.apply(controller, routeArgs.params);
           }
   
           // trigger the `after:route`
-          self.triggerMethod('after:route', [route].concat(arguments));
+          self.triggerMethod('after:route', routeArgs);
         });
       };
   
