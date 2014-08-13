@@ -1,5 +1,5 @@
-/*! marionette.enhancedrouter - v1.2.3
- *  Release on: 2014-08-05
+/*! marionette.enhancedrouter - v1.3.0
+ *  Release on: 2014-08-13
  *  Copyright (c) 2014 Stéphane Bachelier
  *  Licensed MIT */
 (function (root, factory) {
@@ -104,22 +104,10 @@
     // find a controller for the given `route`
     // also pass a resolve and reject function
     _getController: function (route, resolve, reject) {
-      // resolve promise if controller is present for current route
-      if (this._controllers[route] && this._controllers[route].controller) {
-        resolve(this._controllers[route].controller);
-      }
-      else {
-        // record resolve and reject function for later use for the given route
-        this._controllers[route] = {
-          resolve: resolve,
-          reject: reject
-        };
+      // record resolve and reject function for the given route
+      this._addRouteResolver(route, resolve, reject);
   
-        // check if catch all router exists
-        if (this._controllers['*']) {
-          this._controllers[route].resolve(this._controllers['*'].controller);
-        }
-      }
+      this._foo(route);
     },
   
     // ## addController
@@ -127,26 +115,68 @@
     // or add a *global* controller by calling without giving a route
     // `router.addController(Controller)`
     addController: function (controller, route) {
-      // add catch all route
-      if (route === undefined) {
-        route = '*';
-      }
+      // add catch all route if needed
+      route = route || '*';
   
       // add the `controller` under the `route` entry on `_controllers`
       if (!this._controllers[route]) {
-        this._controllers[route] = {
-          controller: controller
-        };
+        this._controllers[route] = {};
       }
-      else {
-        // add or update the current `controller` for the given `route`
-        this._controllers[route].controller = controller;
   
-        // resolve promise if a resolver exists for the given `route`
-        if (this._controllers[route].resolve) {
-          this._controllers[route].resolve(controller);
-        }
+      // add or update the current `controller` for the given `route`
+      this._controllers[route].controller = controller;
+  
+      // check if any pending promises are waiting to be resolved
+      this._foo(route);
+    },
+  
+    _foo: function (route) {
+      // resolve promise if controller is present for current route else call catchall route
+      if (!this._resolveRoute(route)) {
+        this._resolveCatchAllRoute();
       }
+    },
+  
+    _resolveRoute: function (route) {
+      // resolve promise if a resolver exists for the given `route`
+      var isRouteDefined = this._isRouteDefined(route);
+      if (isRouteDefined) {
+        this._controllers[route].resolve(this._controllers[route].controller);
+      }
+      return isRouteDefined;
+    },
+  
+    _resolveCatchAllRoute: function () {
+      if (this._hasRouteController('*') && this.currentResolver) {
+        this.currentResolver.resolve(this._controllers['*'].controller);
+      }
+    },
+  
+    _addRouteResolver: function (route, resolve, reject) {
+      if (!this._controllers[route]) {
+        this._controllers[route] = {};
+      }
+  
+      this._controllers[route].resolve = resolve;
+      this._controllers[route].reject = reject;
+  
+      // keep a reference on existing promise resolvers
+      this.currentResolver = {
+        resolve: resolve,
+        reject: reject
+      };
+    },
+  
+    _isRouteDefined: function (route) {
+      return this._hasRouteResolver(route) && this._hasRouteController(route);
+    },
+  
+    _hasRouteResolver: function (route) {
+      return undefined !== this._controllers[route] && undefined !== this._controllers[route].resolve;
+    },
+  
+    _hasRouteController: function (route) {
+      return undefined !== this._controllers[route] && undefined !== this._controllers[route].controller;
     },
   
     // ## _addAppRoute
@@ -166,23 +196,31 @@
           _.bind(self._getController, self)(route, resolve, reject);
         });
   
-        promise.then(function (controller) {
-          // find a the method `methodName` on the `controller`.
-          var handler = controller[methodName];
-          if (!handler) {
-            throw new Error('Method "' + methodName + '" was not found on the controller');
-          }
-          if (handler) {
-            handler.apply(controller, routeArgs.params);
-          }
+        promise
+          .then(function (controller) {
+            // find a the method `methodName` on the `controller`.
+            var handler = controller[methodName];
+            if (!handler) {
+              throw new Error('Method "' + methodName + '" was not found on the controller');
+            }
+            if (handler) {
+              handler.apply(controller, routeArgs.params);
+            }
   
-          // trigger the `after:route`
-          self.triggerMethod('after:route', routeArgs);
-        });
+            // trigger the `after:route`
+            self.triggerMethod('after:route', routeArgs);
+          })
+          .catch(function (err) {
+            self.errorHandler.call(self, err);
+          });
       };
   
       // add a handler for the given `route`
       this.route(route, methodName, _.bind(method, this));
+    },
+  
+    errorHandler: function (err) {
+      console.log(err.stack);
     },
   
     // ## Helpers methods
