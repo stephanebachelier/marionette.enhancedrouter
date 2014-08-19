@@ -1,5 +1,5 @@
-/*! marionette.enhancedrouter - v1.3.0
- *  Release on: 2014-08-13
+/*! marionette.enhancedrouter - v1.4.0
+ *  Release on: 2014-08-19
  *  Copyright (c) 2014 Stéphane Bachelier
  *  Licensed MIT */
 (function (root, factory) {
@@ -107,17 +107,41 @@
       // record resolve and reject function for the given route
       this._addRouteResolver(route, resolve, reject);
   
-      this._foo(route);
+      this.resolveRoute(route);
     },
   
     // ## addController
     // Add a `controller` to delegate the logic for the given `route`
     // or add a *global* controller by calling without giving a route
     // `router.addController(Controller)`
-    addController: function (controller, route) {
+    addController: function (controller, routes) {
       // add catch all route if needed
-      route = route || '*';
+      routes = routes || '*';
   
+      // routes can be defined as a sole string
+      if ('string' === typeof routes) {
+        this.addRouteController(controller, routes);
+      }
+      else {
+        // or as an array
+        if ('[object Array]' === Object.prototype.toString.call(routes)) {
+          for (var i = 0, len = routes.length; i < len; i += 1) {
+            this.addRouteController(controller, routes[i]);
+          }
+        }
+        else {
+          // or as an object where keys are the routes
+          for (var route in routes) {
+            this.addRouteController(controller, route);
+          }
+        }
+      }
+  
+      // check if any pending promises are waiting to be resolved
+      // this.resolveRoute(route);
+    },
+  
+    addRouteController: function (controller, route) {
       // add the `controller` under the `route` entry on `_controllers`
       if (!this._controllers[route]) {
         this._controllers[route] = {};
@@ -125,12 +149,9 @@
   
       // add or update the current `controller` for the given `route`
       this._controllers[route].controller = controller;
-  
-      // check if any pending promises are waiting to be resolved
-      this._foo(route);
     },
   
-    _foo: function (route) {
+    resolveRoute: function (route) {
       // resolve promise if controller is present for current route else call catchall route
       if (!this._resolveRoute(route)) {
         this._resolveCatchAllRoute();
