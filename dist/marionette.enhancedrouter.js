@@ -1,4 +1,4 @@
-/*! marionette.enhancedrouter - v1.4.0
+/*! marionette.enhancedrouter - v1.5.0
  *  Release on: 2014-08-19
  *  Copyright (c) 2014 Stéphane Bachelier
  *  Licensed MIT */
@@ -136,19 +136,14 @@
           }
         }
       }
-  
-      // check if any pending promises are waiting to be resolved
-      // this.resolveRoute(route);
     },
   
     addRouteController: function (controller, route) {
       // add the `controller` under the `route` entry on `_controllers`
-      if (!this._controllers[route]) {
-        this._controllers[route] = {};
-      }
+      this._controllers[route] = controller;
   
-      // add or update the current `controller` for the given `route`
-      this._controllers[route].controller = controller;
+      // check if any pending promises are waiting to be resolved
+      this._resolveRoute(route);
     },
   
     resolveRoute: function (route) {
@@ -160,44 +155,33 @@
   
     _resolveRoute: function (route) {
       // resolve promise if a resolver exists for the given `route`
-      var isRouteDefined = this._isRouteDefined(route);
-      if (isRouteDefined) {
-        this._controllers[route].resolve(this._controllers[route].controller);
+      var isResult = this._hasRouteController(route) && this._pending;
+      if (isResult) {
+        this._resolvePending(route);
       }
-      return isRouteDefined;
+      return isResult;
     },
   
     _resolveCatchAllRoute: function () {
-      if (this._hasRouteController('*') && this.currentResolver) {
-        this.currentResolver.resolve(this._controllers['*'].controller);
-      }
+      this._resolveRoute('*');
+    },
+  
+    _resolvePending: function (route) {
+      this._pending.resolve(this._controllers[route]);
+      delete this._pending;
     },
   
     _addRouteResolver: function (route, resolve, reject) {
-      if (!this._controllers[route]) {
-        this._controllers[route] = {};
-      }
-  
-      this._controllers[route].resolve = resolve;
-      this._controllers[route].reject = reject;
-  
-      // keep a reference on existing promise resolvers
-      this.currentResolver = {
+      // keep a reference on current promise resolvers
+      this._pending = {
+        route: route,
         resolve: resolve,
         reject: reject
       };
     },
   
-    _isRouteDefined: function (route) {
-      return this._hasRouteResolver(route) && this._hasRouteController(route);
-    },
-  
-    _hasRouteResolver: function (route) {
-      return undefined !== this._controllers[route] && undefined !== this._controllers[route].resolve;
-    },
-  
     _hasRouteController: function (route) {
-      return undefined !== this._controllers[route] && undefined !== this._controllers[route].controller;
+      return undefined !== this._controllers[route];
     },
   
     // ## _addAppRoute
