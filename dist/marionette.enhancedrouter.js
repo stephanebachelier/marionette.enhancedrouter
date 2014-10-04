@@ -1,5 +1,5 @@
-/*! marionette.enhancedrouter - v1.5.0
- *  Release on: 2014-08-19
+/*! marionette.enhancedrouter - v1.5.1
+ *  Release on: 2014-10-04
  *  Copyright (c) 2014 Stéphane Bachelier
  *  Licensed MIT */
 (function (root, factory) {
