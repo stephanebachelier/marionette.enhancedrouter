@@ -1,6 +1,6 @@
 {
   "name": "marionette.enhancedrouter",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "An enhanced Backbone Router",
   "main": "dist/marionette.enhancedrouter.js",
   "author": {
