@@ -6,10 +6,10 @@ module.exports = {
     objectToExport: 'EnhancedRouter',
     indent: '  ',
     deps: {
-      default: ['Backbone', 'Marionette', '_', 'RSVP'],
-      amd: ['backbone', 'marionette', 'underscore', 'rsvp'],
-      cjs: ['backbone', 'marionette', 'underscore', 'rsvp'],
-      global: ['backbone', 'marionette', '_', 'RSVP']
+      default: ['Backbone', 'Marionette', '_'],
+      amd: ['backbone', 'marionette', 'underscore'],
+      cjs: ['backbone', 'marionette', 'underscore'],
+      global: ['backbone', 'marionette', '_']
     }
   }
 };
