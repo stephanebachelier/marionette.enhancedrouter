@@ -1,18 +1,18 @@
-/*! marionette.enhancedrouter - v1.5.4
+/*! marionette.enhancedrouter - v1.5.5
  *  Release on: 2015-11-10
  *  Copyright (c) 2015 Stéphane Bachelier
  *  Licensed MIT */
 (function(root, factory) {
     if(typeof exports === 'object') {
-        module.exports = factory(require('backbone'), require('marionette'), require('underscore'), require('rsvp'));
+        module.exports = factory(require('backbone'), require('marionette'), require('underscore'));
     }
     else if(typeof define === 'function' && define.amd) {
-        define(['backbone', 'marionette', 'underscore', 'rsvp'], factory);
+        define(['backbone', 'marionette', 'underscore'], factory);
     }
     else {
-        root['EnhancedRouter'] = factory(root.backbone, root.marionette, root._, root.RSVP);
+        root['EnhancedRouter'] = factory(root.backbone, root.marionette, root._);
     }
-}(this, function(Backbone, Marionette, _, RSVP) {
+}(this, function(Backbone, Marionette, _) {
 
   'use strict';
   // # EnhancedRouter
